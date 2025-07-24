@@ -1,3 +1,7 @@
+github.com/BrownNPC/Ice-Data-Channel v0.0.0-20250724202104-5781a11f4e8e h1:IRHS1Yelpej8ZBbTA9LwKl0MxwWUtLxvq0nnqiiSFak=
+github.com/BrownNPC/Ice-Data-Channel v0.0.0-20250724202104-5781a11f4e8e/go.mod h1:ide+GPY/0vJ7nCcXkyg8wLihvNrr1Lb5239qeKTFx8w=
+github.com/coder/websocket v1.8.13 h1:f3QZdXy7uGVz+4uCJy2nTZyM0yTBj8yANEHhqlXZ9FE=
+github.com/coder/websocket v1.8.13/go.mod h1:LNVeNrXQZfe5qhS9ALED3uA+l5pPqvwXg3CKoDBB2gs=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=

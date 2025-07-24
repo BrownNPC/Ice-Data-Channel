@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"crypto/rand"
-	"dc/message"
+	"github.com/BrownNPC/Ice-Data-Channel/message"
 	"log/slog"
 	"sync"
 	"time"

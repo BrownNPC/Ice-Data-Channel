@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	"dc/message"
+	"github.com/BrownNPC/Ice-Data-Channel/message"
 	"log"
 	"net"
 	"net/http"

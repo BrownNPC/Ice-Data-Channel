@@ -1,8 +1,8 @@
 package server_test
 
 import (
-	"dc/message"
-	"dc/server"
+	"github.com/BrownNPC/Ice-Data-Channel/message"
+	"github.com/BrownNPC/Ice-Data-Channel/server"
 	"net"
 	"net/url"
 	"testing"

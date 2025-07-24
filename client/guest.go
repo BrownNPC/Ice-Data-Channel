@@ -2,7 +2,7 @@ package client
 
 import (
 	"context"
-	"dc/message"
+	"github.com/BrownNPC/Ice-Data-Channel/message"
 	"fmt"
 	"log/slog"
 
