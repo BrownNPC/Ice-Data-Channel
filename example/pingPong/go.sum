@@ -1,5 +1,5 @@
-github.com/BrownNPC/Ice-Data-Channel v0.0.0-20250724202316-11b7c7dbce62 h1:I5oT8NHumVC8xeh66/lcutXoxvTLI1rX/KtnM5rUg5Q=
-github.com/BrownNPC/Ice-Data-Channel v0.0.0-20250724202316-11b7c7dbce62/go.mod h1:ide+GPY/0vJ7nCcXkyg8wLihvNrr1Lb5239qeKTFx8w=
+github.com/BrownNPC/Ice-Data-Channel v0.0.1 h1:1XLRGO+Iqfdb9dcVy6PFB4zemNTGrr9+59Eux1W+GRA=
+github.com/BrownNPC/Ice-Data-Channel v0.0.1/go.mod h1:yBnZ/hBL356GrxX54A/OZNLRO7Azgnq3KIwuEGZa1oY=
 github.com/coder/websocket v1.8.13 h1:f3QZdXy7uGVz+4uCJy2nTZyM0yTBj8yANEHhqlXZ9FE=
 github.com/coder/websocket v1.8.13/go.mod h1:LNVeNrXQZfe5qhS9ALED3uA+l5pPqvwXg3CKoDBB2gs=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=

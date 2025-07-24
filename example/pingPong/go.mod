@@ -3,7 +3,7 @@ module pingPong
 go 1.24.1
 
 require (
-	github.com/BrownNPC/Ice-Data-Channel v0.0.0-20250724202316-11b7c7dbce62
+	github.com/BrownNPC/Ice-Data-Channel v0.0.1
 	github.com/google/uuid v1.6.0
 	github.com/pion/ice/v4 v4.0.10
 )
