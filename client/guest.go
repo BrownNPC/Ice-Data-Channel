@@ -2,9 +2,11 @@ package client
 
 import (
 	"context"
-	"github.com/BrownNPC/Ice-Data-Channel/message"
 	"fmt"
 	"log/slog"
+
+	"github.com/BrownNPC/Ice-Data-Channel/message"
+	"github.com/google/uuid"
 
 	"github.com/coder/websocket"
 	"github.com/pion/ice/v4"
@@ -13,7 +15,7 @@ import (
 type Guest struct {
 	pc   *peerConnection
 	ws   ws
-	conn *ice.Conn
+	conn Conn
 }
 
 func NewGuest(ctx context.Context, roomID string, cfg Config) (guest *Guest, err error) {
@@ -54,10 +56,10 @@ func NewGuest(ctx context.Context, roomID string, cfg Config) (guest *Guest, err
 	if err != nil {
 		return
 	}
-	guest.conn = ice_conn
+	guest.conn = newPacketConn(uuid.UUID{}, ice_conn)
 	return
 }
-func (guest *Guest) Conn() *ice.Conn { return guest.conn }
+func (guest *Guest) Conn() Conn { return guest.conn }
 
 // listen for ice candidates over websocket
 func (guest *Guest) CandidateListener(ctx context.Context) {

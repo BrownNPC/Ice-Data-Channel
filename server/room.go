@@ -61,7 +61,7 @@ func (room *Room) WriteToWebsocket(id uuid.UUID, msg message.Msg) {
 		}
 	}
 }
-func NewRoom() *Room {
+func newRoom() *Room {
 	room := Room{
 		ID:          rand.Text()[:6],
 		OwnerID:     uuid.UUID{},
@@ -132,14 +132,28 @@ func (connection *Connection) Listen(room *Room, shutdownCtx context.Context) {
 		if typ == websocket.MessageBinary {
 			msg := message.Decode(payload)
 			if IsOwner {
-				// blindly forward the message
-				if OwnerMsgTypesToForwardToGuest(msg.Type) {
+				if ownerMsgTypesToForwardToGuest(msg.Type) {
+					// blindly forward the message
 					room.WriteToWebsocket(msg.To, msg)
 				} else {
-					slog.Debug("unallowed message type sent by owner")
+					switch msg.Type {
+					case message.Kick:
+						// owner has asked to kick this peer
+						conn, ok := room.GetConnection(msg.To)
+						if !ok {
+							continue
+						}
+						if conn != nil {
+							room.WriteToWebsocket(msg.To, msg)
+							conn.conn.Close(websocket.StatusPolicyViolation, "kicked by owner")
+							room.Delete(msg.To)
+						}
+					default:
+						slog.Debug("unallowed message type sent by owner")
+					}
 				}
 			} else { // not owner
-				if !GuestMsgTypesToForwardToOwner(msg.Type) {
+				if !guestMsgTypesToForwardToOwner(msg.Type) {
 					slog.Debug("unallowed message type sent by guest", "type", msg.Type)
 					continue
 				}

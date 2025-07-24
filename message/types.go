@@ -19,6 +19,7 @@ const (
 	IceCandidatesEnd
 
 	GuestDisconnected
+	Kick
 )
 
 // connection creates a room
@@ -82,6 +83,13 @@ func IceCandidateForGuestMsg(candidate string, To uuid.UUID) Msg {
 	}
 }
 
+// the owner tells the signaling server to kick this peer
+func KickMsg(Target uuid.UUID) Msg {
+	return Msg{
+		To:   Target,
+		Type: Kick,
+	}
+}
 func PingMsg() Msg {
 	return Msg{
 		Type: Ping,

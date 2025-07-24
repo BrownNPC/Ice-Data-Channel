@@ -32,19 +32,19 @@ func WsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	msg := ReadInitialMessage(conn)
+	msg := readInitialMessage(conn)
 	if msg == nil {
 		return
 	}
 	switch msg.Type {
 	case message.CreateRoomRequest:
-		room := NewRoom()
-		go StoreRoom(room)
+		room := newRoom()
+		go storeRoom(room)
 		// blocking
 		room.NewConnection(true, conn)
-		DeleteRoom(room)
+		deleteRoom(room)
 	case message.JoinRoomRequest:
-		room := GetRoom(msg.RoomID)
+		room := getRoom(msg.RoomID)
 		if room == nil {
 			conn.Close(websocket.StatusNormalClosure, "room does not exist")
 			return
@@ -56,7 +56,7 @@ func WsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // message types that will be forwarded from owner to a specific guest
-func OwnerMsgTypesToForwardToGuest(typ message.Type) bool {
+func ownerMsgTypesToForwardToGuest(typ message.Type) bool {
 	switch typ {
 	case message.IceAuthResponse,
 		message.IceCandidatesEnd,
@@ -68,7 +68,7 @@ func OwnerMsgTypesToForwardToGuest(typ message.Type) bool {
 }
 
 // message types that will be forwarded from a specific guest to owner
-func GuestMsgTypesToForwardToOwner(typ message.Type) bool {
+func guestMsgTypesToForwardToOwner(typ message.Type) bool {
 	switch typ {
 	case
 		message.IceAuthInitiate,
@@ -79,7 +79,7 @@ func GuestMsgTypesToForwardToOwner(typ message.Type) bool {
 		return false
 	}
 }
-func ReadInitialMessage(conn *websocket.Conn) *message.Msg {
+func readInitialMessage(conn *websocket.Conn) *message.Msg {
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Second*20)
 	// conn must send a message telling us what it wants to do
 	typ, payload, err := conn.Read(ctx)
@@ -105,17 +105,17 @@ func ReadInitialMessage(conn *websocket.Conn) *message.Msg {
 		return nil
 	}
 }
-func StoreRoom(room *Room) {
+func storeRoom(room *Room) {
 	storage.Lock()
 	storage.rooms[room.ID] = room
 	storage.Unlock()
 }
-func DeleteRoom(room *Room) {
+func deleteRoom(room *Room) {
 	storage.Lock()
 	delete(storage.rooms, room.ID)
 	storage.Unlock()
 }
-func GetRoom(id string) *Room {
+func getRoom(id string) *Room {
 	storage.Lock()
 	defer storage.Unlock()
 

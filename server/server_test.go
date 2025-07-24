@@ -16,7 +16,7 @@ func TestCreateRoom(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	go server.Serve(l, u)
+	go server.Serve(l, u.Path)
 	ctx := t.Context()
 	conn, _, err := websocket.Dial(ctx, u.String(), nil)
 	if err != nil {

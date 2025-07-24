@@ -8,6 +8,10 @@ require (
 	github.com/pion/ice/v4 v4.0.10
 )
 
+replace (
+	github.com/BrownNPC/Ice-Data-Channel v0.0.1 => ../../
+)
+
 require (
 	github.com/coder/websocket v1.8.13 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

@@ -11,8 +11,6 @@ import (
 	"time"
 
 	"encoding/json"
-	"github.com/google/uuid"
-	"github.com/pion/ice/v4"
 )
 
 func main() {
@@ -34,7 +32,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	//6 character room ID. Example: ABC123
 	fmt.Println("created room with id", owner.RoomID)
 
@@ -50,15 +48,19 @@ func main() {
 		}
 		guest.Conn().Write(payload)
 	}
-	select {}
+	<-exit
 }
-func OnConnect(id uuid.UUID, conn *ice.Conn) {
+
+var exit = make(chan struct{})
+
+func OnConnect(conn client.Conn) {
 	var buf [1500]byte
 	fmt.Println("new connection!")
 	for {
 		n, err := conn.Read(buf[:])
 		if err != nil {
 			fmt.Println(err)
+			close(exit)
 			return
 		}
 		t := time.Time{}

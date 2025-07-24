@@ -2,15 +2,15 @@ package client
 
 import (
 	"context"
-	"github.com/BrownNPC/Ice-Data-Channel/message"
 	"fmt"
 	"log/slog"
 	"sync"
 	"time"
 
+	"github.com/BrownNPC/Ice-Data-Channel/message"
+
 	"github.com/coder/websocket"
 	"github.com/google/uuid"
-	"github.com/pion/ice/v4"
 )
 
 type Owner struct {
@@ -18,12 +18,12 @@ type Owner struct {
 	connMu      sync.Mutex
 	RoomID      string
 	cfg         Config
-	onConnect   func(id uuid.UUID, conn *ice.Conn)
+	onConnect   func(conn Conn)
 
 	ws ws
 }
 
-func NewOwner(ctx context.Context, onConnect func(id uuid.UUID, conn *ice.Conn), cfg Config) (owner *Owner, err error) {
+func NewOwner(ctx context.Context, onConnect func(conn Conn), cfg Config) (owner *Owner, err error) {
 	conn, _, err := websocket.Dial(ctx, cfg.signalingServer.String(), nil)
 	if err != nil {
 		return
@@ -91,7 +91,7 @@ func (owner *Owner) handleMsg(ctx context.Context, msg message.Msg) error {
 		owner.addConnection(msg.From, pc)
 		err = owner.ws.WriteMsg(ctx, message.IceAuthResponseMsg(ufrag, pwd, msg.From))
 		if err != nil {
-			owner.removeConnection(msg.From)
+			owner.deleteConnection(msg.From)
 			slog.Debug("failed to write to guest connection", "error", err)
 			return nil
 		}
@@ -102,7 +102,7 @@ func (owner *Owner) handleMsg(ctx context.Context, msg message.Msg) error {
 				slog.Error("failed to dial", "error", err)
 				return
 			}
-			owner.onConnect(msg.From, conn)
+			owner.onConnect(newPacketConn(msg.From, conn))
 		}()
 		// forward locally gathered ice candidates
 		go func() {
@@ -125,6 +125,14 @@ func (owner *Owner) handleMsg(ctx context.Context, msg message.Msg) error {
 		if err != nil {
 			slog.Debug("failed to add remote candidate", "candidate", msg.Candidate)
 		}
+	case message.GuestDisconnected:
+		pc := owner.getConnection(msg.From)
+		if pc == nil {
+			slog.Debug("ask to disconnect a non-connected peer")
+			return nil
+		}
+		pc.agent.Close()
+
 	case message.Ping:
 		return nil
 	default:
@@ -137,9 +145,15 @@ func (owner *Owner) addConnection(id uuid.UUID, pc *peerConnection) {
 	owner.connections[id] = pc
 	owner.connMu.Unlock()
 }
+func (owner *Owner) Kick(conn Conn) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	owner.ws.WriteMsg(ctx, message.KickMsg(conn.iD))
+	cancel()
+	owner.deleteConnection(conn.iD)
+}
 
 // does not disconnect, only deletes from map
-func (owner *Owner) removeConnection(id uuid.UUID) {
+func (owner *Owner) deleteConnection(id uuid.UUID) {
 	owner.connMu.Lock()
 	delete(owner.connections, id)
 	owner.connMu.Unlock()
