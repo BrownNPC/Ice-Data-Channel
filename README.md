@@ -130,5 +130,3 @@ func OnConnect(id uuid.UUID, conn *ice.Conn) {
 MIT © [BrownNPC](https://github.com/BrownNPC)
 
 ---
-
-Let me know if you'd like a logo or badges added (e.g. Go Report Card, License, Build status).
