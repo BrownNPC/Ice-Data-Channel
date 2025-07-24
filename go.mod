@@ -1,4 +1,4 @@
-module dc
+module github.com/BrownNPC/Ice-Data-Channel
 
 go 1.24.1
 

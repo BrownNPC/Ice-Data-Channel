@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"dc/client"
-	"dc/server"
 	"fmt"
+	"github.com/BrownNPC/Ice-Data-Channel/client"
+	"github.com/BrownNPC/Ice-Data-Channel/server"
 	"log/slog"
 	"net"
 	"os"
