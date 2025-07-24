@@ -41,6 +41,9 @@ func main() {
 		panic(err)
 	}
 
+	//6 character room ID. Example: ABC123
+	fmt.Println("created room with id", owner.RoomID)
+	
 	// Guest joins using the owner's room ID
 	guest, err := client.NewGuest(ctx, owner.RoomID, cfg)
 	if err != nil {
