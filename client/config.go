@@ -9,18 +9,18 @@ import (
 
 type Config struct {
 	// config to pass to PeerConnection
-	agentCfg ice.AgentConfig
+	AgentCfg ice.AgentConfig
 	// where to dial the signaling server
-	signalingServer url.URL
+	SignalingServer url.URL
 }
 
 func DefaultConfig(SignalingServerAddr, path string) Config {
 	return Config{
-		signalingServer: url.URL{
+		SignalingServer: url.URL{
 			Scheme: "ws", Path: path,
 			Host: SignalingServerAddr,
 		},
-		agentCfg: ice.AgentConfig{
+		AgentCfg: ice.AgentConfig{
 			NetworkTypes:     []ice.NetworkType{ice.NetworkTypeUDP4, ice.NetworkTypeUDP6},
 			MulticastDNSMode: ice.MulticastDNSModeQueryAndGather,
 			Urls: []*stun.URI{

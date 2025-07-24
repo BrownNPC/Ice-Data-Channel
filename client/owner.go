@@ -24,7 +24,7 @@ type Owner struct {
 }
 
 func NewOwner(ctx context.Context, onConnect func(conn Conn), cfg Config) (owner *Owner, err error) {
-	conn, _, err := websocket.Dial(ctx, cfg.signalingServer.String(), nil)
+	conn, _, err := websocket.Dial(ctx, cfg.SignalingServer.String(), nil)
 	if err != nil {
 		return
 	}
@@ -84,7 +84,7 @@ func (owner *Owner) handleMsg(ctx context.Context, msg message.Msg) error {
 	switch msg.Type {
 	case message.IceAuthInitiate:
 		remoteUfrag, remotePwd := msg.Ufrag, msg.Pwd
-		pc, ufrag, pwd, err := newPeerConnection(owner.cfg.agentCfg)
+		pc, ufrag, pwd, err := newPeerConnection(owner.cfg.AgentCfg)
 		if err != nil {
 			return err
 		}

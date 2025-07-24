@@ -19,11 +19,11 @@ type Guest struct {
 }
 
 func NewGuest(ctx context.Context, roomID string, cfg Config) (guest *Guest, err error) {
-	conn, _, err := websocket.Dial(ctx, cfg.signalingServer.String(), nil)
+	conn, _, err := websocket.Dial(ctx, cfg.SignalingServer.String(), nil)
 	if err != nil {
 		return
 	}
-	pc, ufrag, pwd, err := newPeerConnection(cfg.agentCfg)
+	pc, ufrag, pwd, err := newPeerConnection(cfg.AgentCfg)
 	if err != nil {
 		return
 	}
