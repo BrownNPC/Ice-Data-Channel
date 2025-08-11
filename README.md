@@ -18,7 +18,7 @@ This library enables NAT traversal via ICE and simplifies the setup process with
 
 ## Example
 
-[Full Example](https://github.com/BrownNPC/Ice-Data-Channel/blob/master/example/pingPong/pingPong.go)
+[Full Example](https://github.com/BrownNPC/Ice-Data-Channel/blob/master/example/pingPong/main.go)
 
 ```go
 func main() {
