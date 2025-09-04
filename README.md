@@ -63,23 +63,22 @@ func main() {
 	select {} // keep alive
 }
 
-func OnConnect(id uuid.UUID, conn *ice.Conn) {
+func OnConnect(conn client.Conn) {
 	var buf [1500]byte
-	fmt.Println("New connection!")
-
+	fmt.Println("new connection!")
 	for {
 		n, err := conn.Read(buf[:])
 		if err != nil {
 			fmt.Println(err)
+			close(exit)
 			return
 		}
-
-		var t time.Time
-		if err := json.Unmarshal(buf[:n], &t); err != nil {
-			panic("failed to unmarshal time: " + err.Error())
+		t := time.Time{}
+		err = json.Unmarshal(buf[:n], &t)
+		if err != nil {
+			panic("failed to unmarshal time " + err.Error())
 		}
-
-		fmt.Println("Received in:", time.Since(t))
+		fmt.Println(time.Since(t))
 	}
 }
 ```
